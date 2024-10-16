@@ -1,7 +1,5 @@
 # CI/CD and Jenkins 
 
-
-
 ## 1. What is CI? Benefits?
 
 ### **Continuous Integration (CI)**:
