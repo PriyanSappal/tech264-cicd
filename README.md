@@ -1,5 +1,30 @@
 # CI/CD and Jenkins 
 
+- [CI/CD and Jenkins](#cicd-and-jenkins)
+  - [1. What is CI? Benefits?](#1-what-is-ci-benefits)
+    - [**Continuous Integration (CI)**:](#continuous-integration-ci)
+    - [**Benefits of CI**:](#benefits-of-ci)
+  - [2. What is CD? Benefits?](#2-what-is-cd-benefits)
+    - [**Continuous Delivery (CD)**:](#continuous-delivery-cd)
+    - [**Benefits of CD**:](#benefits-of-cd)
+  - [3. Difference between CD and CDE](#3-difference-between-cd-and-cde)
+    - [**Continuous Delivery (CD)**:](#continuous-delivery-cd-1)
+    - [**Continuous Deployment (CDE)**:](#continuous-deployment-cde)
+    - [**Key Difference**:](#key-difference)
+  - [4. What is Jenkins?](#4-what-is-jenkins)
+  - [5. Why use Jenkins? Benefits of using Jenkins? Disadvantages?](#5-why-use-jenkins-benefits-of-using-jenkins-disadvantages)
+    - [**Why Use Jenkins?**:](#why-use-jenkins)
+    - [**Benefits of Using Jenkins**:](#benefits-of-using-jenkins)
+    - [**Disadvantages of Jenkins**:](#disadvantages-of-jenkins)
+  - [6. Stages of Jenkins](#6-stages-of-jenkins)
+  - [7. What alternatives are there for Jenkins?](#7-what-alternatives-are-there-for-jenkins)
+  - [8. Why build a pipeline? Business value?](#8-why-build-a-pipeline-business-value)
+    - [**Why Build a CI/CD Pipeline?**:](#why-build-a-cicd-pipeline)
+    - [**Business Value**:](#business-value)
+  - [9. General Diagram of CI/CD](#9-general-diagram-of-cicd)
+  - [10. Understand SDLC Workflow: Plan, Design, Develop, Deploy](#10-understand-sdlc-workflow-plan-design-develop-deploy)
+  - [Demo from trainer - notes](#demo-from-trainer---notes)
+
 ## 1. What is CI? Benefits?
 
 ### **Continuous Integration (CI)**:
@@ -61,7 +86,7 @@ Jenkins automates repetitive tasks in the software development process, making i
 
 ### **Disadvantages of Jenkins**:
 - **Complex Setup**: Jenkins can be complex to set up and configure, especially for large projects.
-- **Maintenance**: Regular plugin updates and server maintenance are required.
+- **Maintenance**: Jenkins is self-hosted. Regular plugin updates and server maintenance are required.
 - **Performance Issues**: Jenkins may suffer from performance issues when running multiple jobs concurrently or under heavy load.
 - **UI/UX Limitations**: Jenkins has a somewhat outdated user interface compared to newer CI/CD tools.
 
@@ -125,3 +150,6 @@ The actual coding happens in this phase. Developers write the code, and the appl
 
 Deploy:
 The completed application is deployed to a production environment, making it accessible to users. This stage involves releasing, monitoring, and supporting the software post-deployment.
+
+## Demo from trainer - notes
+* Pushed changes from Git Bash that will trigger the pipeline within jenkins (within this it will test and check the code and actually use this to change the website) and that will make a new EC2 instance on AWS which will incorporate the changes. 
