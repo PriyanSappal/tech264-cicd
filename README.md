@@ -326,10 +326,10 @@ EOF
 ![alt text](images/image-6.png)
 
 ### 9. Homepage after CI/CD pipeline
-![alt text](image.png)
+![alt text](images/front-page-after-3-jobs.png)
   
 ### **Diagram for the 3 Jobs**  
-![alt text](image-1.png)
+![alt text](images/diagram-for-3-jobs-cicd.png)
 
 **Explanation and summary**:
 * We start with making the key pair in our `.ssh` directory. 
