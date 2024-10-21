@@ -38,6 +38,8 @@
     - [6. Add a new job (Job 2) in Jenkins from the dashboard](#6-add-a-new-job-job-2-in-jenkins-from-the-dashboard)
     - [7. Add a new job (Job 3) in Jenkins from the dashboard](#7-add-a-new-job-job-3-in-jenkins-from-the-dashboard)
     - [8. Potential Blockers](#8-potential-blockers)
+    - [9. Homepage after CI/CD pipeline](#9-homepage-after-cicd-pipeline)
+    - [**Diagram for the 3 Jobs**](#diagram-for-the-3-jobs)
 
 ## 1. What is CI? Benefits?
 
@@ -180,31 +182,31 @@ The completed application is deployed to a production environment, making it acc
  
 ## Make your mini pipeline (a job)
 1. Select "new item" in the left hand side
-2. name it (as only tech264 are using these server you can exclude that part)
-3. select freestyle
+2. Name it (as only tech264 are using these server you can exclude that part)
+3. Select freestyle project
 4. Everytime the pipeline runs it saves it as a "build"
-5. we want to keep a max of 5 and discard old builds
-6. scroll down to build steps
-7. select execute shell
-8. add the ```uname -a``` command
-9. when you're done:
-   1.  go to dashboard
-   2.  click build history and click the number
-   3.  click the console output and you can see the command you've run and the output
-10. when the worker node (that runs the jobs) has run the job, the node stays for 10 minutes
+5. We want to keep a max of 5 and discard old builds
+6. Scroll down to build steps
+7. Select **Execute Shell**
+8. Add the ```uname -a``` command
+9. When you're done:
+   1.  Go to dashboard
+   2.  Click build history and click the number
+   3.  Click the console output and you can see the command you've run and the output
+10. When the worker node (that runs the jobs) has run the job, the node stays for 10 minutes
  
 ## To get jobs to run on after another
-1. go back to dashboard
-2. click the first job you want to run
-3. go to configure on the left hand side
-4. scroll to the bottom to "post-build actions"
-5. select build other projects
-6. choose your next project (can add multiple)
-7. select trigger only if build is stable
-8. save
-9. click build now
-10. in the console output you should be able to see that it has triggered the next build
-11. and if you go to the console output of the triggered build, it should say it was started by an upstream project
+1. Go back to dashboard
+2. Click the first job you want to run
+3. Go to configure on the left hand side
+4. Scroll to the bottom to "post-build actions"
+5. Select build other projects
+6. Choose your next project (can add multiple)
+7. Select trigger only if build is stable
+8. Save
+9. Click build now
+10. In the console output you should be able to see that it has triggered the next build
+11. And if you go to the console output of the triggered build, it should say it was started by an upstream project
 
 ## Diagram of Jenkins with 3 Jobs
 
@@ -215,7 +217,7 @@ The completed application is deployed to a production environment, making it acc
 * Therefore, Jenkins would need to authenticate with the private key (e.g, pem file) for  Job 3: to SSH into and deploy the code. 
 * All the dependencies for the app to run needs to be installed and configured. 
 
-* In Jenkins, polling refers to the process where Jenkins regularly checks a version control system (such as Git) for changes in the code repository. If changes (commits) are detected, Jenkins triggers a build automatically.
+* In Jenkins, **polling** refers to the process where Jenkins regularly checks a version control system (such as Git) for changes in the code repository. If changes (commits) are detected, Jenkins triggers a build automatically.
 
 ## Steps for Jenkins for 3 Jobs
 
@@ -238,12 +240,21 @@ The completed application is deployed to a production environment, making it acc
 2. Enable Github Project.
 3. Enter the **HTTPS link** for the **repository** you wish to link.
 4. Fill in as follows: 
+
 ![alt text](images/image.png)
+
+<br>
+
 ![alt text](images/image-2.png)
+
 Make sure you remove the `.git`.
+
 ![alt text](images/image-1.png)
+
+<br>
+
 **Source Code Management**
-   1. select **Git** and enter your **SSH** repository link.
+   1. Select **Git** and enter your **SSH** repository link.
    2. Add your credentials.
    3. For the **Kind** section, select **SSH Username with private key**.
    4. In **ID**, name it the same as the key.
@@ -289,9 +300,9 @@ git push origin main
     * Branch to push should be `main` instead of `dev` in the picture. 
 
 ### 7. Add a new job (Job 3) in Jenkins from the dashboard
-* You can still follow the steps as in Job 1, but make the following changes:
+* You can still follow the steps as in **Job 1**, but make the following changes:
 * You need to add your AWS key that was created and added into your `.ssh` directory. 
-* Under Source Code Management:
+* Under **Source Code Management**:
     * Make sure it is the `*/dev` branch for bracnches to build. 
 * You would need to `cat` the `.pem` file and paste it in the **SSH AGENT** in Jenkins - this would be under credentials and you would choose SSH key for your AWS key to be added. This makes the script easier to write. 
 * Add the script as follows, the `rsync` command will copy the app stored in Jenkins and copy to the home directory of the ec2 instance with the updated code: 
@@ -308,6 +319,26 @@ EOF
 * Try restarting the EC2 instance to ensure it is working and then you will have to SSH into it and restart the app using `pm2`. 
 * No user input: `StrictHostKeyChecking=no`. 
 * Simplicity is key - having the the app being copied over to your home directory and using `~` to specify this. 
-* The setting under **Build Triggers** you will only need the GitHub hook trigger for GITScm polling in Job 1 and it will listen throughout the pipeline. 
+* The setting under **Build Triggers** you will only need the **GitHub hook trigger for GITScm polling** in Job 1 and it will listen throughout the pipeline. 
+
+<br>
+
 ![alt text](images/image-6.png)
+
+### 9. Homepage after CI/CD pipeline
+![alt text](image.png)
   
+### **Diagram for the 3 Jobs**  
+![alt text](image-1.png)
+
+**Explanation and summary**:
+* We start with making the key pair in our `.ssh` directory. 
+   * The public key will be for GitHub. 
+   * The private key will be for Jenkins. 
+* **Job 1** (freestyle project) is created as a test for the `dev` branch.
+* **Job 2** will take the code that is pushed from the `dev` branch to merge the changes with the main branch on our remote repository on GitHub. 
+* **Job 3** is the deployment stage where all the stages that were made to the `dev` branch will be shown on the app front page and deployed on an **EC2 Instance**. 
+* In order for all these jobs to come after each other you will need to specify that each build will trigger the next one if the build is stable. 
+* Jenkins is used here as an automation server to help automate, build, test and deploy by allowing communication to version control (GitHub) and deployment tools (AWS).
+   * You will need a **Github-Webhook** for Jenkins to listen to any changes in the code or general repository changes. 
+   * **SSH Keys** especially for Jenkins to copy code to the EC2 instance and SSH into the VM.  
